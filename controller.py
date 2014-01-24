@@ -8,8 +8,7 @@ app.config.from_object(config)
 @app.route("/")
 def index():
     if session.get('userId'):
-        userId = session['userId']
-        active, passive = model.getCurrentTasks(userId)
+        active, passive = model.getCurrentTasks(session['userId'])
         return render_template("home.html", active=active, passive=passive)
     return redirect(url_for("login"))
 
@@ -44,6 +43,7 @@ def registerUser():
     if password != verify:
         flash("Passwords do not match")
         return redirect(url_for("register"))
+    #creates user row and also starter tasks
     model.createUser(email, password)
     return redirect(url_for("login"))
 
@@ -60,32 +60,58 @@ def help():
 
 @app.route("/forgotpassword")
 def recover():
+    #query for user and email pw recovery link
     return render_template("recover.html")
 
 @app.route("/companies")
 def companies():
-    #query for user and find companies
-    return render_template("companies.html")
+    if not session.get('userId'):
+        return redirect(url_for("login"))
+    active, passive = model.getCurrentTasks(session['userId'])
+    activeCompanies, rejectedCompanies = model.displayCompanies(session['userId'])
+    return render_template("companies.html", active=active, passive=passive, activeCompanies=activeCompanies, rejectedCompanies=rejectedCompanies)
 
 @app.route("/schedule")
 def schedule():
+    if not session.get('userId'):
+        return redirect(url_for("login"))
+    active, passive = model.getCurrentTasks(session['userId'])
     #query for user and find the schedule
-    return render_template("schedule.html")
+        #contains interviews, events, deadlines
+    return render_template("schedule.html", active=active, passive=passive)
 
-@app.route("/task/<taskId>")
-def displayDetails(taskId):
-    task = UserTask.query.get(taskId)
-    #check that user task belongs to this user!
-    if task.userId != session['userId']:
+@app.route("/task/<tId>")
+def displayDetails(tId):
+    if not session.get('userId'):
+        return redirect(url_for("login"))
+    #check if task exists in db
+    if not UserTask.query.get(tId):
+        return render_template("unavailable.html")
+    t = UserTask.query.get(tId)
+    #check that user task belongs to this user
+    if t.userId != session['userId']:
         return render_template("incorrect.html")
-    return render_template("taskDetails.html", task=task)
+    #check if task is not completed
+    if t.completed:
+        return render_template("oldTask.html")
+    task = TaskTemplate.query.get(t.taskId)
+    active, passive = model.getCurrentTasks(session['userId'])
+    return render_template("taskDetails.html", task=task, active=active, passive=passive)
+
+######################## CRUD HANDLERS ########################
 
 #COMPANY HANDLERS
 
 @app.route("/task/createcompany/<tId>")
 def createCompany():
-    #get values from form fields
-    #create company
+    name = request.form.get('name')
+    position = request.form.get('position')
+    phone = request.form.get('phone')
+    address = request.form.get('address')
+    c = Company(name=name, position=position, phone=phone,
+        address=address, userId=session['userId'])
+    model.session.add(c)
+    model.session.commit()
     return redirect(url_for("completedTask", tId=tId))
 
 @app.route("/task/modifycompany/<tId>")
@@ -95,14 +121,23 @@ def modifyCompany():
 
 @app.route("/task/companyrejection/<tId>")
 def deleteCompany():
-    #FILL IN LOGIC (change status)
+    task = UserTask.query.get(tId)
+    company = Company.query.get(task.companyId)
+    company.status = 0
+    model.session.commit()
     return redirect(url_for("completedTask", tId=tId))
 
 #CONTACT HANDLERS
 
 @app.route("/task/createcontact/<tId>")
 def createContact():
-    #FILL IN LOGIC
+    name = request.form.get('name')
+    contactInfo = request.form.get('contactInfo')
+    task = UserTask.query.get(tId)
+    companyId = task.companyId
+    contact = Contact(name=name, contactInfo=contactInfo, companyId=companyId)
+    model.session.add(contact)
+    model.session.commit()
     return redirect(url_for("completedTask", tId=tId))
 
 @app.route("/task/modifycontact/<tId>")
@@ -114,33 +149,62 @@ def modifyContact():
 
 @app.route("/task/createinterview/<tId>")
 def createInterview():
-    #FILL IN LOGIC
+    deadline = request.form.get('deadline')
+    task = UserTask.query.get(tId)
+    companyId = task.companyId
+    interview = Interview(deadline=deadline, companyId=companyId)
+    model.session.add(interview)
+    model.session.commit()
     return redirect(url_for("completedTask", tId=tId))
 
 @app.route("/task/modifyinterview/<tId>")
 def modifyInterview():
     #FILL IN LOGIC
+    #Ex. add note, make changes to entered data?
+    return redirect(url_for("completedTask", tId=tId))
+
+#NOTE HANDLERS
+
+@app.route("/task/createCompanyNote/<tId>")
+def createNote(tId):
+    #FILL IN LOGIC
+    return redirect(url_for("completedTask", tId=tId))
+
+@app.route("/task/modifyCompanyNote/<tId>")
+def modifyNote(tId):
+    #FILL IN LOGIC
+    return redirect(url_for("completedTask", tId=tId))
+
+@app.route("/task/deleteCompanyNote/<tId>")
+def deleteNote(tId):
+    #FILL IN LOGIC
     return redirect(url_for("completedTask", tId=tId))
 
 #TASK HANDLERS
 
+#completeTask completes current task and creates new tasks
 @app.route("/task/completed/<tId>")
 def completedTask(tId):
     model.completeTask(tId, session['userId'])
     #some sort of alert or congrats message pop-up
     return redirect(url_for("index"))
 
+#!!!!Make this AJAX!!!!
 @app.route("/task/makepassive/<tId>")
 def makePassive(tId):
-    #Query for task and make it passive
-    #This could be AJAX
+    task = UserTask.query.get(tId)
+    task.passive = True
+    model.session.commit()
     return redirect(url_for("index"))
 
 #BADGE HANDLERS
 
+#!!!!Make this AJAX!!!!
 @app.route("/badges/createbadge/<bId>")
-    #create instance of badge
-    #This could be AJAX
+def createBadge():
+    badge = Badge(userId=session['userId'], badgeId=bId)
+    model.session.add()
+    model.session.commit()
     return redirect(url_for("index"))
 
 if __name__ == "__main__":

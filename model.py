@@ -27,10 +27,10 @@ class User(Base, UserMixin):
     points = Column(Integer, default=0)
     employed = Column(Boolean, default=False)
 
-    # industry = Columnn(String(64), nullable=False)
-    # position = Column(String(64), nullable=False)
+    # industry = Columnn(String(64), nullable=True)
+    # position = Column(String(64), nullable=True)
     # figure out how to get coordinates
-    # location = Column(String(64), nullable=False)
+    # location = Column(String(64), nullable=True)
     # linkedin/fb api connects
 
     badges = relationship("Badge", uselist=True)
@@ -86,11 +86,13 @@ class Company(Base):
     phone = Column(Integer, nullable=True)
     address = Column(Text, nullable=True)
     notes = Column(Text, nullable=True)
-    status = Column(Integer, default=0)
+    #0 - rejected, 1 - start, 2.....n - etc
+    status = Column(Integer, default=1)
 
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User")
     contacts = relationship("Contact", uselist=True)
+    notes = relationship("Note", uselist=True)
     interviews = relationship("Interview", uselist=True)
     tasks = relationship("UserTask", uselist=True)
 
@@ -110,8 +112,16 @@ class Interview(Base):
     id = Column(Integer, primary_key=True)
     deadline = Column(DateTime, default=datetime.now)
     notes = Column(Text, nullable=True)
-    feedback = Column(Text, nullable=True)
     completed = Column(Boolean, default=False)
+
+    companyId = Column(Integer, ForeignKey("companies.id"))
+    company = relationship("Company")
+
+class Notes(Base):
+    __tablename__ = "notes"
+    id = Column(Integer, primary_key=True)
+    created = Column(DateTime, default=datetime.now)
+    notes = Column(Text, nullable=False)
 
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
@@ -142,7 +152,6 @@ class UserTask(Base):
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
 
-
 # Model methods
 
 def getCurrentTasks(userId):
@@ -154,7 +163,7 @@ def getCurrentTasks(userId):
         if not task.completed:
             t = TaskTemplate.query.get(task.taskId)
             if task.passive:
-                passiveTask.append(t)
+                passiveTasks.append(t)
             else:
                 activeTasks.append(t)
     return activeTasks[:5], passiveTasks
@@ -177,6 +186,7 @@ def completeTask(tId, userId):
     taskTemplate = TaskTemplate.query.get(task.taskId)
     user.points += taskTemplate.points
     session.commit()
+
     #creating new tasks
     next = taskTemplate.next
     taskTokens = next.split("|")
@@ -189,6 +199,18 @@ def completeTask(tId, userId):
             t.companyId = task.companyId
         session.add(t)
     session.commit()
+
+def displayCompanies(userId):
+    active = []
+    rejected = []
+    user = User.query.get(userId)
+    companies = user.companies
+    for company in companies:
+        if company.status == 0:
+            rejected.append(company)
+        else:
+            active.append(company)
+    return active, rejected
 
 # Table creation/ seed data
 
