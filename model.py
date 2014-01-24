@@ -180,25 +180,26 @@ def createUser(email, password):
 
 def completeTask(tId, userId):
     task = UserTask.query.get(tId)
-    task.completed = True
-    task.dateCompleted = datetime.today()
-    user = User.query.get(userId)
-    taskTemplate = TaskTemplate.query.get(task.taskId)
-    user.points += taskTemplate.points
-    session.commit()
+    if not task.completed:
+        task.completed = True
+        task.dateCompleted = datetime.today()
+        user = User.query.get(userId)
+        taskTemplate = TaskTemplate.query.get(task.taskId)
+        user.points += taskTemplate.points
+        session.commit()
 
-    #creating new tasks
-    next = taskTemplate.nextTasks
-    if next != "":
-        taskTokens = next.split("|")
-        for token in taskTokens:
-            new_taskId = int(token)
-            t = UserTask(userId=userId, taskId=new_taskId)
-            #if prev task had a companyId and this new task is company category, copy id
-            newTemplate = TaskTemplate.query.get(new_taskId)
-            if task.companyId and (newTemplate.category == 0):
-                t.companyId = task.companyId
-            session.add(t)
+        #creating new tasks
+        next = taskTemplate.nextTasks
+        if next != "":
+            taskTokens = next.split("|")
+            for token in taskTokens:
+                new_taskId = int(token)
+                t = UserTask(userId=userId, taskId=new_taskId)
+                #if prev task had a companyId and this new task is company category, copy id
+                newTemplate = TaskTemplate.query.get(new_taskId)
+                if task.companyId and (newTemplate.category == 0):
+                    t.companyId = task.companyId
+                session.add(t)
         session.commit()
 
 def displayCompanies(userId):
