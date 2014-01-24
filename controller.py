@@ -5,6 +5,10 @@ import config
 app = Flask(__name__)
 app.config.from_object(config)
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
 @app.route("/")
 def index():
     return render_template("home.html")
