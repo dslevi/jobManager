@@ -9,5 +9,15 @@ app.config.from_object(config)
 def index():
     return render_template("index.html")
 
+@app.route("/<taskId>")
+def displayDetails(taskId):
+    # task = UserTake.query.get(taskId)
+    task = "<form><input type='text'></input></form>"
+    return render_template("taskDetails.html", task=task)
+
+@app.route("/hello")
+def test():
+    return render_template("test.html")
+
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

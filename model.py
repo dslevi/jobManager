@@ -57,6 +57,7 @@ class TaskTemplate(Base):
     points = Column(Integer, default=0)
     category = Column(Integer, default=0)
     imgPath = Column(String(64), nullable=False)
+    difficulty = Column(Integer, default=0)
 
     taskInstances = relationship("UserTask", uselist=True)
 
