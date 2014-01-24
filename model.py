@@ -117,7 +117,7 @@ class Interview(Base):
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
 
-class Notes(Base):
+class Note(Base):
     __tablename__ = "notes"
     id = Column(Integer, primary_key=True)
     created = Column(DateTime, default=datetime.now)
