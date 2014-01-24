@@ -24,7 +24,6 @@ class User(Base, UserMixin):
     salt = Column(String(64), nullable=False)
 
     deadline = Column(DateTime, default=datetime.now)
-    numApplications = Column(Integer, default=0)
     points = Column(Integer, default=0)
     employed = Column(Boolean, default=False)
 
@@ -57,6 +56,7 @@ class TaskTemplate(Base):
     category = Column(Integer, default=0)
     imgPath = Column(String(64), nullable=False)
     difficulty = Column(Integer, default=0)
+    nextTasks = Column(String(64), nullable=True)
 
     taskInstances = relationship("UserTask", uselist=True)
 
@@ -133,6 +133,7 @@ class UserTask(Base):
     dateAssigned = Column(DateTime, default=datetime.now)
     dateCompleted = Column(DateTime, default=datetime.now)
     completed = Column(Boolean, default=False)
+    passive = Column(Boolean, default=False)
 
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User")
@@ -147,12 +148,16 @@ class UserTask(Base):
 def getCurrentTasks(userId):
     user = User.query.get(userId)
     tasklist = user.tasks
-    tasks = []
+    activeTasks = []
+    passiveTasks = []
     for task in tasklist:
         if not task.completed:
             t = TaskTemplate.query.get(task.taskId)
-            tasks.append(t)
-    return tasks
+            if task.passive:
+                passiveTask.append(t)
+            else:
+                activeTasks.append(t)
+    return activeTasks[:5], passiveTasks
 
 def createUser(email, password):
     user = User(email=email)
@@ -161,6 +166,27 @@ def createUser(email, password):
     session.commit()
     for i in range(2, 7):
         t = UserTask(userId=user.id, taskId=i, companyId=0)
+        session.add(t)
+    session.commit()
+
+def completeTask(tId, userId):
+    task = UserTask.query.get(tId)
+    task.completed = True
+    task.dateCompleted = datetime.datetime.today()
+    user = User.query.get(userId)
+    taskTemplate = TaskTemplate.query.get(task.taskId)
+    user.points += taskTemplate.points
+    session.commit()
+    #creating new tasks
+    next = taskTemplate.next
+    taskTokens = next.split("|")
+    for token in taskToken:
+        new_taskId = int(token)
+        t = UserTask(userId=userId, taskId=new_taskId)
+        #if prev task had a companyId and this new task is company category, copy id
+        newTemplate = TaskTemplate.query.get(new_taskId)
+        if task.companyId and (newTemplate.category == 0):
+            t.companyId = task.companyId
         session.add(t)
     session.commit()
 
@@ -192,8 +218,7 @@ def create_taskTemplates():
     line = f.readline()
     while line != "":
         tokens = line.split(",")
-        print tokens
-        t = TaskTemplate(title=tokens[0], description=tokens[1], points=tokens[2], category=tokens[3], imgPath=tokens[4], difficulty=tokens[5].strip("\n"))
+        t = TaskTemplate(title=tokens[1], description=tokens[2], points=tokens[3], category=tokens[4], imgPath=tokens[5], difficulty=tokens[6], nextTasks=tokens[7].strip("\n"))
         session.add(t)
         session.commit()
         line = f.readline()
@@ -209,7 +234,7 @@ def create_badgeTemplates():
     while line != "":
         tokens = line.split(",")
         print tokens
-        b = BadgeTemplate(name=tokens[0], description=tokens[1], imgPath=tokens[2])
+        b = BadgeTemplate(name=tokens[1], description=tokens[2], imgPath=tokens[3])
         session.add(b)
         session.commit()
         line = f.readline()

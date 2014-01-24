@@ -7,10 +7,19 @@
     <body>
         <div class="container">
             <div class="taskbar">
-                <p>Tasks</p>
-                {% for task in tasks %}
-                    <div class="task" id="t{{task.id}}">{{task.title}}</div>
-                {% endfor %}
+                <div id="active_tasks">
+                    <p class="header">Active Tasks</p>
+                    {% for task in active %}
+                        <div class="task active" id="at{{task.id}}">{{task.title}}</div>
+                    {% endfor %}
+                    </p>
+                </div>
+                <div id="passive_tasks">
+                    <p class="header">Passive Tasks</p>
+                    {% for task in passive %}
+                        <div class="task passive" id="pt{{task.id}}">{{task.title}}</div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="windows">
                 <div class="navbar">
