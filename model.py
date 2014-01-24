@@ -29,13 +29,11 @@ class User(Base, UserMixin):
     points = Column(Integer, default=0)
     employed = Column(Boolean, default=False)
 
-    industry = Columnn(String(64), nullable=False)
-    position = Column(String(64), nullable=False)
-    
-    location = Column(String(64), nullable=False)
-
-    #linkedin
-    #fb
+    # industry = Columnn(String(64), nullable=False)
+    # position = Column(String(64), nullable=False)
+    # figure out how to get coordinates
+    # location = Column(String(64), nullable=False)
+    # linkedin/fb api connects
 
     badges = relationship("Badge", uselist=True)
     resumes = relationship("Resume", uselist=True)
@@ -57,7 +55,9 @@ class TaskTemplate(Base):
     summary = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
     points = Column(Integer, default=0)
+    category = Column(Integer, default=0)
     imgPath = Column(String(64), nullable=False)
+
     taskInstances = relationship("Task", uselist=True)
 
 class BadgeTemplate(Base):
@@ -66,30 +66,33 @@ class BadgeTemplate(Base):
     name = Column(String(64), nullable=True)
     imgPath = Column(String(64), nullable=False)
     description = Column(Text, nullable=False)
+
     badgeInstances = relationship("Badge", uselist=True)
 
 #ONE TO MANY
 
-class Resume(Base):
-    __tablename__ = "resumes"
-    id = Column(Integer, primary_key=True)
-    filePath = Column(String(64), nullable=False)
-    uploadDate = Column(DateTime, nullable=False, default=datetime.now)
-    userId = relationship("User")
+# class Resume(Base):
+#     __tablename__ = "resumes"
+#     id = Column(Integer, primary_key=True)
+#     filePath = Column(String(64), nullable=False)
+#     uploadDate = Column(DateTime, nullable=False, default=datetime.now)
+#     userId = relationship("User")
 
 class Company(Base):
     __tablename__ = "companies"
     id = Column(Integer, primary_key=True)
-    userId = relationship("User")
-    interviews = relationship("Interview", uselist=True)
     name = Column(String(64), nullable=False)
     position = Column(Text, nullable=False)
     phone = Column(Integer, nullable=True)
     address = Column(Text, nullable=True)
     notes = Column(Text, nullable=True)
-    contacts = relationship("Contact", uselist=True)
-    interviews = relationship("Interviews", uselist=True)
     status = Column(Integer, default=0)
+
+    userId = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User")
+    contacts = relationship("Contact", uselist=True)
+    interviews = relationship("Interview", uselist=True)
+    tasks = relationship("Company", uselist=True)
 
 class Contact(Base):
     __tablename__ = "contacts"
@@ -97,35 +100,53 @@ class Contact(Base):
     name = Column(String(64), nullable=False)
     contactInfo = Column(Text, nullable=False)
     notes = Column(Text, nullable=True)
-    companyId = relationship("Company")
     contacted = Column(Boolean, default=False)
+
+    companyId = Column(Integer, ForeignKey("companies.id"))
+    company = relationship("Company")
 
 class Interview(Base):
     __tablename__ = "interviews"
     id = Column(Integer, primary_key=True)
     deadline = Column(DateTime, default=datetime.now)
-    companyId = relationship("Company")
     notes = Column(Text, nullable=True)
     feedback = Column(Text, nullable=True)
     completed = Column(Boolean, default=False)
+
+    companyId = Column(Integer, ForeignKey("companies.id"))
+    company = relationship("Company")
 
 #MANY TO MANY
 
 class Badge(Base):
     __tablename__ = "badges"
     id = Column(Integer, primary_key=True)
-    userId = relationship("User")
-    badgeId = relationship("BadgeTemplate")
+
+    userId = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User")
+    badgeId = Column(Integer, ForeignKey("badgeTemplates.id"))
+    badge = relationship("BadgeTemplate")
 
 class UserTask(Base):
     __tablename__ = "userTasks"
     id = Column(Integer, primary_key=True)
-    userId = relationship("User")
-    taskId = relationship("TaskTempate")
+    dateAssigned = Column(DateTime, default=datetime.now)
+    dateCompleted = Column(DateTime, default=datetime.now)
     completed = Column(Boolean, default=False)
+
+    userId = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User")
+    taskId = Column(Integer, ForeignKey("taskTemplates.id"))
+    task = relationship("TaskTempate")
+    companyId = Column(Integer, ForeignKey("companies.id"))
+    company = relationship("Company")
 
 def create_tables():
     Base.metadata.create_all(engine)
+    u = User(name="Danielle", email="dslevi12@gmail.com")
+    u.set_password("python")
+    session.add(u)
+    session.commit()
     print "Tables completed"
 
 
