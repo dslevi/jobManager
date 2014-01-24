@@ -147,6 +147,17 @@ def create_tables():
     u = User(name="Danielle", email="dslevi12@gmail.com")
     u.set_password("python")
     session.add(u)
+    u2 = User(name="Hidi", email="nahid@gmail.com")
+    u2.set_password("hackbright")
+    session.add(u2)
+    t = TaskTemplate(summary="This is a short summary", description="This is a long description with many things", imgPath="/task1")
+    session.add(t)
+    session.commit()
+    c = Company(name="Skybox Imaging", position="Software Engingeer", userId=u.id)
+    session.add(c)
+    session.commit()
+    task = UserTask(userId=u.id, taskId=t.id, companyId=c.id)
+    session.add(task)
     session.commit()
     print "Tables completed"
 

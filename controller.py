@@ -7,10 +7,13 @@ app.config.from_object(config)
 
 @app.route("/")
 def index():
-    user = User.query.get(1)
-    print "name ", user.name
-    print "companies ", user.companies
-    tasks = [1, 2, 3]
+    user = User.query.get(2)
+    tasklist = user.tasks
+    tasks = []
+    for task in tasklist:
+        t = TaskTemplate.query.get(task.taskId)
+        title = t.summary
+        tasks.append(title)
     return render_template("home.html", tasks=tasks)
     # if session.get('userId'):
     #     tasks = User.query.get(session['userId']).one().tasks
@@ -76,7 +79,7 @@ def help():
 @app.route("/task/<taskId>")
 def displayDetails(taskId):
     # task = UserTake.query.get(taskId)
-    task = "<form><input type='text'></input></form>"
+    task = "hello"
     return render_template("taskDetails.html", task=task)
 
 
