@@ -19,7 +19,7 @@ def login():
 def validate():
     email = request.forms.get('email')
     password = request.forms.get('password')
-    user = User.query.filter_by(email=email)
+    user = User.query.filter_by(email=email).one()
     if user.authenticate(password):
         session['userId'] = user.id
         return redirect(url_for('index'))
@@ -36,10 +36,13 @@ def registerUser():
     email = request.forms.get('email')
     password = request.forms.get('password')
     verify = request.forms.get('verify')
-    if successful:
-        return redirect(url_for("login"))
-    flash("Invalid information")
-    return redirect(url_for("register"))
+    if user.query.filter_by(email=email).all():
+        flash("Email already exists")
+        return redirect(url_for("register"))
+    if password != verify:
+        flash("Passwords do not match")
+        return redirect(url_for("register"))
+    return redirect(url_for("login"))
 
 @app.route("/companies")
 def companies():
