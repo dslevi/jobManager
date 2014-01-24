@@ -142,6 +142,27 @@ class UserTask(Base):
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
 
+
+# Model methods
+
+def getUnfinishedTasks(userId):
+    user = User.query.get(userId)
+    tasklist = user.tasks
+    tasks = []
+    for task in tasklist:
+        if not task.completed:
+            t = TaskTemplate.query.get(task.taskId)
+            title = t.summary
+            tasks.append(title)
+    return tasks
+
+
+
+
+
+
+# Table creation/ seed data
+
 def create_tables():
     Base.metadata.create_all(engine)
     u = User(name="Danielle", email="dslevi12@gmail.com")

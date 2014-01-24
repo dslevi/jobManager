@@ -1,23 +1,16 @@
 from flask import Flask, render_template, redirect, request, g, session, url_for, flash, send_from_directory
 from model import User, TaskTemplate, BadgeTemplate, Company, Contact, Interview, Badge, UserTask, session
-import config
+import config, model
 
 app = Flask(__name__)
 app.config.from_object(config)
 
 @app.route("/")
 def index():
-    user = User.query.get(2)
-    tasklist = user.tasks
-    tasks = []
-    for task in tasklist:
-        t = TaskTemplate.query.get(task.taskId)
-        title = t.summary
-        tasks.append(title)
-    return render_template("home.html", tasks=tasks)
     # if session.get('userId'):
-    #     tasks = User.query.get(session['userId']).one().tasks
-    #     return render_template("home.html", tasks=tasks)
+    userId = 1
+    tasks = model.getUnfinishedTasks(userId)
+    return render_template("home.html", tasks=tasks)
     return redirect(url_for("login"))
 
 @app.route("/login")
