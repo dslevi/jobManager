@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>???</title>
+        <link rel="stylesheet" href="/static/css/main.css">
+        <script type="text/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="taskbar">
+                <p>Tasks</p>
+            </div>
+            <div class="windows">
+                <div class="navbar">
+                    <a href="/home" class="nav_link">Home</a>
+                    <a href="/companies" class="nav_link">Companies</a>
+                    <a href="/schedule" class="nav_link">Schedule</a>
+                    <a href="/help" class="nav_link">Help</a>
+                </div>
+                <div class="window_content">
+                    {% block body %}
+                    {% endblock %}
+                <div>
+            </div>
+        </div>
+    </body>
+</html>
