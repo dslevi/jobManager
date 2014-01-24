@@ -36,7 +36,7 @@ class User(Base, UserMixin):
     # linkedin/fb api connects
 
     badges = relationship("Badge", uselist=True)
-    resumes = relationship("Resume", uselist=True)
+    # resumes = relationship("Resume", uselist=True)
     tasks = relationship("UserTask", uselist=True)
     companies = relationship("Company", uselist=True)
 
@@ -58,7 +58,7 @@ class TaskTemplate(Base):
     category = Column(Integer, default=0)
     imgPath = Column(String(64), nullable=False)
 
-    taskInstances = relationship("Task", uselist=True)
+    taskInstances = relationship("UserTask", uselist=True)
 
 class BadgeTemplate(Base):
     __tablename__ = "badgeTemplates"
@@ -92,7 +92,7 @@ class Company(Base):
     user = relationship("User")
     contacts = relationship("Contact", uselist=True)
     interviews = relationship("Interview", uselist=True)
-    tasks = relationship("Company", uselist=True)
+    tasks = relationship("UserTask", uselist=True)
 
 class Contact(Base):
     __tablename__ = "contacts"
@@ -137,7 +137,7 @@ class UserTask(Base):
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User")
     taskId = Column(Integer, ForeignKey("taskTemplates.id"))
-    task = relationship("TaskTempate")
+    task = relationship("TaskTemplate")
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
 
