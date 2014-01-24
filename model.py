@@ -23,17 +23,15 @@ class User(Base, UserMixin):
     email = Column(String(64), nullable=False)
     password = Column(String(64), nullable=False)
     salt = Column(String(64), nullable=False)
-    phone = Column(Integer, nullable=True)
 
     deadline = Column(DateTime, default=datetime.now)
     numApplications = Column(Integer, default=0)
     points = Column(Integer, default=0)
     employed = Column(Boolean, default=False)
-    company = Column(String(64), nullable=True)
+
     industry = Columnn(String(64), nullable=False)
     position = Column(String(64), nullable=False)
     
-    #find out how to do locations
     location = Column(String(64), nullable=False)
 
     #linkedin
@@ -41,8 +39,8 @@ class User(Base, UserMixin):
 
     badges = relationship("Badge", uselist=True)
     resumes = relationship("Resume", uselist=True)
-    completedTasks = relationship("Task", uselist=True)
-    waitingTasks = relationship("Task", uselist=True)
+    tasks = relationship("UserTask", uselist=True)
+    companies = relationship("Company", uselist=True)
 
     def set_password(self, password):
         self.salt = bcrypt.gensalt()
@@ -53,7 +51,24 @@ class User(Base, UserMixin):
         password = password.encode("utf-8")
         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
 
-#ONE (USER) TO MANY
+class TaskTemplate(Base):
+    __tablename__ = "taskTemplates"
+    id = Column(Integer, primary_key=True)
+    summary = Column(Text, nullable=False)
+    description = Column(Text, nullable=False)
+    points = Column(Integer, default=0)
+    imgPath = Column(String(64), nullable=False)
+    taskInstances = relationship("Task", uselist=True)
+
+class BadgeTemplate(Base):
+    __tablename__ = "badgeTemplates"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64), nullable=True)
+    imgPath = Column(String(64), nullable=False)
+    description = Column(Text, nullable=False)
+    badgeInstances = relationship("Badge", uselist=True)
+
+#ONE TO MANY
 
 class Resume(Base):
     __tablename__ = "resumes"
@@ -62,22 +77,52 @@ class Resume(Base):
     uploadDate = Column(DateTime, nullable=False, default=datetime.now)
     userId = relationship("User")
 
-#MANY (USERS) TO MANY --- FIND OUT HOW TO DO BACKREFS
+class Company(Base):
+    __tablename__ = "companies"
+    id = Column(Integer, primary_key=True)
+    userId = relationship("User")
+    interviews = relationship("Interview", uselist=True)
+    name = Column(String(64), nullable=False)
+    position = Column(Text, nullable=False)
+    phone = Column(Integer, nullable=True)
+    address = Column(Text, nullable=True)
+    notes = Column(Text, nullable=True)
+    contacts = relationship("Contact", uselist=True)
+    interviews = relationship("Interviews", uselist=True)
+    status = Column(Integer, default=0)
+
+class Contact(Base):
+    __tablename__ = "contacts"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64), nullable=False)
+    contactInfo = Column(Text, nullable=False)
+    notes = Column(Text, nullable=True)
+    companyId = relationship("Company")
+    contacted = Column(Boolean, default=False)
+
+class Interview(Base):
+    __tablename__ = "interviews"
+    id = Column(Integer, primary_key=True)
+    deadline = Column(DateTime, default=datetime.now)
+    companyId = relationship("Company")
+    notes = Column(Text, nullable=True)
+    feedback = Column(Text, nullable=True)
+    completed = Column(Boolean, default=False)
+
+#MANY TO MANY
 
 class Badge(Base):
     __tablename__ = "badges"
     id = Column(Integer, primary_key=True)
-    name = Column(String(64), nullable=True)
-    imgPath = Column(String(64), nullable=False)
-    description = Column(Text, nullable=False)
+    userId = relationship("User")
+    badgeId = relationship("BadgeTemplate")
 
-class Task(Base):
-    __tablename__ = "tasks"
+class UserTask(Base):
+    __tablename__ = "userTasks"
     id = Column(Integer, primary_key=True)
-    summary = Column(Text, nullable=False)
-    description = Column(Text, nullable=False)
-    points = Column(Integer, default=0)
-    imgPath = Column(String(64), nullable=False)
+    userId = relationship("User")
+    taskId = relationship("TaskTempate")
+    completed = Column(Boolean, default=False)
 
 def create_tables():
     Base.metadata.create_all(engine)
