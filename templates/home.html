@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="content">
-    Home
+    Home<br>
+    {% for task in tasks %}
+        {{task}}<br>
+    {% endfor %}
 </div>
 {% endblock %}

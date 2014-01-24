@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, g, session, url_for, flash, send_from_directory
-import model
+from model import User, TaskTemplate, BadgeTemplate, Company, Contact, Interview, Badge, UserTask, session
 import config
 
 app = Flask(__name__)
@@ -7,8 +7,14 @@ app.config.from_object(config)
 
 @app.route("/")
 def index():
-    if session.get('userId'):
-        return render_template("home.html")
+    user = User.query.get(1)
+    print "name ", user.name
+    print "companies ", user.companies
+    tasks = [1, 2, 3]
+    return render_template("home.html", tasks=tasks)
+    # if session.get('userId'):
+    #     tasks = User.query.get(session['userId']).one().tasks
+    #     return render_template("home.html", tasks=tasks)
     return redirect(url_for("login"))
 
 @app.route("/login")
@@ -42,14 +48,25 @@ def registerUser():
     if password != verify:
         flash("Passwords do not match")
         return redirect(url_for("register"))
+    user = User(email=email)
+    user.set_password(password)
+    session.add(user)
+    session.commit()
     return redirect(url_for("login"))
+
+@app.route("/signout")
+def signout():
+    session.clear()
+    return redirect(url_for("index"))
 
 @app.route("/companies")
 def companies():
+    #query for user and find companies
     return render_template("companies.html")
 
 @app.route("/schedule")
 def schedule():
+    #query for user and find the schedule
     return render_template("schedule.html")
 
 @app.route("/help")
