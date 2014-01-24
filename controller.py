@@ -19,8 +19,8 @@ def login():
 
 @app.route("/validate", methods=["POST"])
 def validate():
-    email = request.forms.get('email')
-    password = request.forms.get('password')
+    email = request.form.get('email')
+    password = request.form.get('password')
     user = User.query.filter_by(email=email).one()
     if user.authenticate(password):
         session['userId'] = user.id
