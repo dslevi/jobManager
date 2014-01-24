@@ -9,7 +9,7 @@ app.config.from_object(config)
 def index():
     # if session.get('userId'):
     userId = 1
-    tasks = model.getUnfinishedTasks(userId)
+    tasks = model.getCurrentTasks(userId)
     return render_template("home.html", tasks=tasks)
     return redirect(url_for("login"))
 
@@ -48,6 +48,7 @@ def registerUser():
     user.set_password(password)
     session.add(user)
     session.commit()
+    #Add the 5 starting tasks
     return redirect(url_for("login"))
 
 @app.route("/signout")

@@ -145,7 +145,7 @@ class UserTask(Base):
 
 # Model methods
 
-def getUnfinishedTasks(userId):
+def getCurrentTasks(userId):
     user = User.query.get(userId)
     tasklist = user.tasks
     tasks = []
@@ -156,10 +156,15 @@ def getUnfinishedTasks(userId):
             tasks.append(title)
     return tasks
 
-
-
-
-
+def createUser(email):
+    user = User(email=email)
+    user.set_password(password)
+    session.add(user)
+    session.commit()
+    for i in range(1, 5):
+        t = UserTask(userId=user.id, taskId=i, companyId=0)
+        session.add(t)
+    session.commit()
 
 # Table creation/ seed data
 
