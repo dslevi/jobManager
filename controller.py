@@ -35,10 +35,10 @@ def register():
 
 @app.route("/registerUser", methods=["POST"])
 def registerUser():
-    email = request.forms.get('email')
-    password = request.forms.get('password')
-    verify = request.forms.get('verify')
-    if user.query.filter_by(email=email).all():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    verify = request.form.get('verify')
+    if User.query.filter_by(email=email).all():
         flash("Email already exists")
         return redirect(url_for("register"))
     if password != verify:
