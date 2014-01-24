@@ -44,8 +44,12 @@ def registerUser():
     if password != verify:
         flash("Passwords do not match")
         return redirect(url_for("register"))
-    model.createUser(email)
+    model.createUser(email, password)
     return redirect(url_for("login"))
+
+@app.route("/forgotpassword")
+def recover():
+    return render_template("recover.html")
 
 @app.route("/signout")
 def signout():

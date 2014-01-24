@@ -156,7 +156,7 @@ def getCurrentTasks(userId):
             tasks.append(title)
     return tasks
 
-def createUser(email):
+def createUser(email, password):
     user = User(email=email)
     user.set_password(password)
     session.add(user)
@@ -187,7 +187,10 @@ def create_tables():
     session.commit()
     print "Tables completed"
 
+def create_taskTemplates():
+    print "Task templates created"
 
 if __name__ == "__main__":
     create_tables()
+    create_taskTemplates()
 
