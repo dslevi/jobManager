@@ -142,11 +142,48 @@ class UserTask(Base):
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
 
+
+# Model methods
+
+def getCurrentTasks(userId):
+    user = User.query.get(userId)
+    tasklist = user.tasks
+    tasks = []
+    for task in tasklist:
+        if not task.completed:
+            t = TaskTemplate.query.get(task.taskId)
+            title = t.summary
+            tasks.append(title)
+    return tasks
+
+def createUser(email):
+    user = User(email=email)
+    user.set_password(password)
+    session.add(user)
+    session.commit()
+    for i in range(1, 5):
+        t = UserTask(userId=user.id, taskId=i, companyId=0)
+        session.add(t)
+    session.commit()
+
+# Table creation/ seed data
+
 def create_tables():
     Base.metadata.create_all(engine)
     u = User(name="Danielle", email="dslevi12@gmail.com")
     u.set_password("python")
     session.add(u)
+    u2 = User(name="Hidi", email="nahid@gmail.com")
+    u2.set_password("hackbright")
+    session.add(u2)
+    t = TaskTemplate(summary="This is a short summary", description="This is a long description with many things", imgPath="/task1")
+    session.add(t)
+    session.commit()
+    c = Company(name="Skybox Imaging", position="Software Engingeer", userId=u.id)
+    session.add(c)
+    session.commit()
+    task = UserTask(userId=u.id, taskId=t.id, companyId=c.id)
+    session.add(task)
     session.commit()
     print "Tables completed"
 
