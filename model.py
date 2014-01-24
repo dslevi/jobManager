@@ -163,9 +163,9 @@ def getCurrentTasks(userId):
         if not task.completed:
             t = TaskTemplate.query.get(task.taskId)
             if task.passive:
-                passiveTasks.append(t)
+                passiveTasks.append((task.id, t))
             else:
-                activeTasks.append(t)
+                activeTasks.append((task.id, t))
     return activeTasks[:5], passiveTasks
 
 def createUser(email, password):
@@ -181,24 +181,25 @@ def createUser(email, password):
 def completeTask(tId, userId):
     task = UserTask.query.get(tId)
     task.completed = True
-    task.dateCompleted = datetime.datetime.today()
+    task.dateCompleted = datetime.today()
     user = User.query.get(userId)
     taskTemplate = TaskTemplate.query.get(task.taskId)
     user.points += taskTemplate.points
     session.commit()
 
     #creating new tasks
-    next = taskTemplate.next
-    taskTokens = next.split("|")
-    for token in taskToken:
-        new_taskId = int(token)
-        t = UserTask(userId=userId, taskId=new_taskId)
-        #if prev task had a companyId and this new task is company category, copy id
-        newTemplate = TaskTemplate.query.get(new_taskId)
-        if task.companyId and (newTemplate.category == 0):
-            t.companyId = task.companyId
-        session.add(t)
-    session.commit()
+    next = taskTemplate.nextTasks
+    if next != "":
+        taskTokens = next.split("|")
+        for token in taskTokens:
+            new_taskId = int(token)
+            t = UserTask(userId=userId, taskId=new_taskId)
+            #if prev task had a companyId and this new task is company category, copy id
+            newTemplate = TaskTemplate.query.get(new_taskId)
+            if task.companyId and (newTemplate.category == 0):
+                t.companyId = task.companyId
+            session.add(t)
+        session.commit()
 
 def displayCompanies(userId):
     active = []

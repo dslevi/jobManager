@@ -9,15 +9,15 @@
             <div class="taskbar">
                 <div id="active_tasks">
                     <p class="header">Active Tasks</p>
-                    {% for task in active %}
-                        <div class="task active" id="at{{task.id}}">{{task.title}}</div>
+                    {% for id, task in active %}
+                        <div class="task active" id="at{{task.id}}">{{id}} {{task.title}}</div>
                     {% endfor %}
                     </p>
                 </div>
                 <div id="passive_tasks">
                     <p class="header">Passive Tasks</p>
-                    {% for task in passive %}
-                        <div class="task passive" id="pt{{task.id}}">{{task.title}}</div>
+                    {% for id, task in passive %}
+                        <div class="task passive" id="pt{{task.id}}">{{id}} {{task.title}}</div>
                     {% endfor %}
                 </div>
             </div>
