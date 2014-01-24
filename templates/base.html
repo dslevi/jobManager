@@ -9,7 +9,7 @@
             <div class="taskbar">
                 <p>Tasks</p>
                 {% for task in tasks %}
-                    <div>{{task}}</div>
+                    <div class="task" id="t{{task.id}}">{{task.title}}</div>
                 {% endfor %}
             </div>
             <div class="windows">
