@@ -8,6 +8,9 @@
         <div class="container">
             <div class="taskbar">
                 <p>Tasks</p>
+                {% for task in tasks %}
+                    <div>{{task}}</div>
+                {% endfor %}
             </div>
             <div class="windows">
                 <div class="navbar">

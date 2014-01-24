@@ -1,12 +1,11 @@
-import config
-import bcrypt
+import config, bcrypt
 from datetime import datetime
-import time
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 from flask.ext.login import UserMixin
+import sys
 
 engine = create_engine(config.DB_URI, echo=False)
 session = scoped_session(sessionmaker(bind=engine,
@@ -52,7 +51,7 @@ class User(Base, UserMixin):
 class TaskTemplate(Base):
     __tablename__ = "taskTemplates"
     id = Column(Integer, primary_key=True)
-    summary = Column(Text, nullable=False)
+    title = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
     points = Column(Integer, default=0)
     category = Column(Integer, default=0)
@@ -152,7 +151,7 @@ def getCurrentTasks(userId):
     for task in tasklist:
         if not task.completed:
             t = TaskTemplate.query.get(task.taskId)
-            title = t.summary
+            title = t.title
             tasks.append(title)
     return tasks
 
@@ -161,7 +160,7 @@ def createUser(email, password):
     user.set_password(password)
     session.add(user)
     session.commit()
-    for i in range(1, 5):
+    for i in range(2, 7):
         t = UserTask(userId=user.id, taskId=i, companyId=0)
         session.add(t)
     session.commit()
@@ -176,7 +175,7 @@ def create_tables():
     u2 = User(name="Hidi", email="nahid@gmail.com")
     u2.set_password("hackbright")
     session.add(u2)
-    t = TaskTemplate(summary="This is a short summary", description="This is a long description with many things", imgPath="/task1")
+    t = TaskTemplate(title="This is a short summary", description="This is a long description with many things", imgPath="/task1")
     session.add(t)
     session.commit()
     c = Company(name="Skybox Imaging", position="Software Engingeer", userId=u.id)
@@ -188,9 +187,38 @@ def create_tables():
     print "Tables completed"
 
 def create_taskTemplates():
+    templates = sys.argv[1]
+    f = open(templates, "r")
+    line = f.readline()
+    line = f.readline()
+    while line != "":
+        tokens = line.split(",")
+        print tokens
+        t = TaskTemplate(title=tokens[0], description=tokens[1], points=tokens[2], category=tokens[3], imgPath=tokens[4], difficulty=tokens[5].strip("\n"))
+        session.add(t)
+        session.commit()
+        line = f.readline()
+    f.close()
     print "Task templates created"
+
+
+def create_badgeTemplates():
+    templates = sys.args[2]
+    f = open(templates, "r")
+    line = f.readline()
+    line = f.readline()
+    while line != "":
+        tokens = line.split(",")
+        print tokens
+        b = BadgeTemplate(name=tokens[0], description=tokens[1], imgPath=tokens[2])
+        session.add(b)
+        session.commit()
+        line = f.readline()
+    f.close()
+    print "Badge templates created"
 
 if __name__ == "__main__":
     create_tables()
     create_taskTemplates()
+    # create_badgeTemplates()
 
