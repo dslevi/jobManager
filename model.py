@@ -151,8 +151,7 @@ def getCurrentTasks(userId):
     for task in tasklist:
         if not task.completed:
             t = TaskTemplate.query.get(task.taskId)
-            title = t.title
-            tasks.append(title)
+            tasks.append(t)
     return tasks
 
 def createUser(email, password):
