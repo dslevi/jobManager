@@ -1,6 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="content">
-    {{task.title}}
+    <div class="task_content">
+        {{task.title}}<br>
+        {{task.description}}<br>
+        {{task.points}}<br>
+        {% if task.html %}
+            <div id="customized_input">
+                {% block customizedInput %}
+                {% endblock %}
+            </div>
+        {% endif %}
+        <a href="/task/TASK.URL">COMPLETED!</a>
+    </div>
 </div>
 {% endblock %}

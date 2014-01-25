@@ -35,3 +35,8 @@ body{
 .task{
     padding: 10px;
 }
+
+#points{
+    float:right;
+    color:white;
+}
