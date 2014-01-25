@@ -1,17 +1,19 @@
 {% extends "base.html" %}
-{% block body %}
-<div class="content">
-    <div class="task_content">
-        {{task.title}}<br>
-        {{task.description}}<br>
-        {{task.points}}<br>
-        {% if task.html %}
-            <div id="customized_input">
-                {% block customizedInput %}
-                {% endblock %}
-            </div>
-        {% endif %}
-        <a href="/task/TASK.URL">COMPLETED!</a>
+{% block content %}
+    <div class="content">
+        <div class="task_content">
+            {{task.title}}<br>
+            {{task.description}}<br>
+            {{task.points}}<br>
+
+            {% if task.htmlFile %}
+                <div id="customized_input">
+                    {% block input %}
+                    {% endblock %}
+                </div>
+            {% endif %}
+
+            <a href="/task/{{tId}}/a/{{task.url}}">COMPLETED!</a>
+        </div>
     </div>
-</div>
 {% endblock %}

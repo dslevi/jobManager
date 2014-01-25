@@ -1,11 +1,11 @@
-Row,Title,Description (escape commas...?),Points,"Category (0 for company, 1 miscellaneous, 2 events)",imgPath,Difficulty,"Next Tasks (del = ""|"")"
-2,Tell us about yourself,Something.... fill in the rest of your bio,20,1,/bio,0,7
-3,Interested Companies,Write a list of ten companies within your industry that you're interested in working for.,10,0,/company,0,8|9
-4,Find Mentor,Find one person who is willing to mentor you through this job process,30,1,/mentor,1,
-5,Identify your role,Create a list of asldkfjsadkljfalskdjfaklsdfnasdmfnasdf,15,1,/position,0,
-6,Write your resume,Write a resume!,50,1,/resume,2,
-7,Identify what you liked about your last job,Write three things that you enjoyed doing,20,1,/bio,0,10
-8,Find a contact at the company that you want to work at ,Enter the contact info for your company contact,50,1,/contact,2,
-9,Talk to the recruiter at the company you want to work at ,Enter the contact info for your recruiter,50,1,/contact,2,
-10,Find a networking event to go to,When is the event?,20,2,/network,2,11
-11,Go to networking event,Attend your event!,60,1,/network,3,
+Row,Title,Description (escape commas...?),Points,"Category (0 for company, 1 miscellaneous, 2 events)",imgPath,Difficulty,"Next Tasks (del = ""|"")",Url,HtmlFile
+2,Tell us about yourself,Something.... fill in the rest of your bio,20,1,/bio,0,7,test,test.html
+3,Interested Companies,Write a list of ten companies within your industry that you're interested in working for.,10,0,/company,0,8|9,,
+4,Find Mentor,Find one person who is willing to mentor you through this job process,30,1,/mentor,1,,,
+5,Identify your role,Create a list of asldkfjsadkljfalskdjfaklsdfnasdmfnasdf,15,1,/position,0,,,
+6,Write your resume,Write a resume!,50,1,/resume,2,,,
+7,Identify what you liked about your last job,Write three things that you enjoyed doing,20,1,/bio,0,10,,
+8,Find a contact at the company that you want to work at ,Enter the contact info for your company contact,50,1,/contact,2,,,
+9,Talk to the recruiter at the company you want to work at ,Enter the contact info for your recruiter,50,1,/contact,2,,,
+10,Find a networking event to go to,When is the event?,20,2,/network,2,11,,
+11,Go to networking event,Attend your event!,60,1,/network,3,,,

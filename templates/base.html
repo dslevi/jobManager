@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
     <head>
         <title>???</title>
@@ -12,7 +13,6 @@
                     {% for id, task in active %}
                         <div class="task active" id="at{{task.id}}">{{id}} {{task.title}}</div>
                     {% endfor %}
-                    </p>
                 </div>
                 <div id="passive_tasks">
                     <p class="header">Passive Tasks</p>
@@ -33,9 +33,9 @@
                     </span>
                 </div>
                 <div class="window_content">
-                    {% block body %}
+                    {% block content %}
                     {% endblock %}
-                <div>
+                </div>
             </div>
         </div>
     </body>

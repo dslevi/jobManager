@@ -97,7 +97,13 @@ def displayDetails(tId):
     task = TaskTemplate.query.get(t.taskId)
     active, passive = model.getCurrentTasks(session['userId'])
     user = User.query.get(session['userId'])
-    return render_template("taskDetails.html", task=task, active=active, passive=passive, user=user)
+    return render_template(task.htmlFile, tId=tId, task=task, active=active, passive=passive, user=user)
+
+###UNIQUE TASK HANDLERS###
+
+@app.route("/task/<tId>/a/<something>")
+def testing(tId, something):
+    return redirect(url_for("index"))
 
 ######################## CRUD HANDLERS ########################
 

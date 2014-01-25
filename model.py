@@ -57,6 +57,8 @@ class TaskTemplate(Base):
     imgPath = Column(String(64), nullable=False)
     difficulty = Column(Integer, default=0)
     nextTasks = Column(String(64), nullable=True)
+    url = Column(String(64), nullable=False)
+    htmlFile = Column(String(64), default="taskDetails.html")
 
     taskInstances = relationship("UserTask", uselist=True)
 
@@ -224,7 +226,7 @@ def create_tables():
     u2 = User(name="Hidi", email="nahid@gmail.com")
     u2.set_password("hackbright")
     session.add(u2)
-    t = TaskTemplate(title="This is a short summary", description="This is a long description with many things", imgPath="/task1")
+    t = TaskTemplate(title="This is a short summary", description="This is a long description with many things", imgPath="/task1", url="test", htmlFile="test.html")
     session.add(t)
     session.commit()
     c = Company(name="Skybox Imaging", position="Software Engingeer", userId=u.id)
@@ -242,7 +244,7 @@ def create_taskTemplates():
     line = f.readline()
     while line != "":
         tokens = line.split(",")
-        t = TaskTemplate(title=tokens[1], description=tokens[2], points=tokens[3], category=tokens[4], imgPath=tokens[5], difficulty=tokens[6], nextTasks=tokens[7].strip("\n"))
+        t = TaskTemplate(title=tokens[1], description=tokens[2], points=tokens[3], category=tokens[4], imgPath=tokens[5], difficulty=tokens[6], nextTasks=tokens[7], url=tokens[8], htmlFile=tokens[9].strip("\n"), )
         session.add(t)
         session.commit()
         line = f.readline()
