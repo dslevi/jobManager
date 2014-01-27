@@ -1,23 +1,25 @@
 <html>
     <head>
-        <title>???</title>
+        <title>Job Manager</title>
         <link rel="stylesheet" href="/static/cssFiles/main.css">
         <script type="text/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="taskbar">
+             
                 <div id="active_tasks">
-                    <p class="header">Active Tasks</p>
+                    <p class="header">Active Tasks</p>  
                     {% for id, task in active %}
-                        <div class="task active" id="at{{task.id}}">{{id}} {{task.title}}</div>
+                        <div class="task_active" id="at{{task.id}}"><a href="/task/{{task.id}}">{{id}} {{task.title}}</div>
                     {% endfor %}
+
                     </p>
                 </div>
                 <div id="passive_tasks">
                     <p class="header">Passive Tasks</p>
                     {% for id, task in passive %}
-                        <div class="task passive" id="pt{{task.id}}">{{id}} {{task.title}}</div>
+                        <div class="task_passive" id="pt{{task.id}}">{{id}} {{task.title}}</div>
                     {% endfor %}
                 </div>
             </div>
