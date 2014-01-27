@@ -9,7 +9,8 @@ app.config.from_object(config)
 def index():
     if session.get('userId'):
         active, passive = model.getCurrentTasks(session['userId'])
-        return render_template("home.html", active=active, passive=passive)
+        user = User.query.get(session['userId'])
+        return render_template("home.html", active=active, passive=passive, user=user)
     return redirect(url_for("login"))
 
 @app.route("/login")
@@ -69,7 +70,8 @@ def companies():
         return redirect(url_for("login"))
     active, passive = model.getCurrentTasks(session['userId'])
     activeCompanies, rejectedCompanies = model.displayCompanies(session['userId'])
-    return render_template("companies.html", active=active, passive=passive, activeCompanies=activeCompanies, rejectedCompanies=rejectedCompanies)
+    user = User.query.get(session['userId'])
+    return render_template("companies.html", active=active, passive=passive, activeCompanies=activeCompanies, rejectedCompanies=rejectedCompanies, user=user)
 
 @app.route("/schedule")
 def schedule():
@@ -78,25 +80,30 @@ def schedule():
     active, passive = model.getCurrentTasks(session['userId'])
     #query for user and find the schedule
         #contains interviews, events, deadlines
-    return render_template("schedule.html", active=active, passive=passive)
+    user = User.query.get(session['userId'])
+    return render_template("schedule.html", active=active, passive=passive, user=user)
 
 @app.route("/task/<tId>")
 def displayDetails(tId):
     if not session.get('userId'):
         return redirect(url_for("login"))
     #check if task exists in db
-    if not UserTask.query.get(tId):
-        return render_template("unavailable.html")
-    t = UserTask.query.get(tId)
-    #check that user task belongs to this user
-    if t.userId != session['userId']:
-        return render_template("incorrect.html")
+    if not authorized(tId):
+        return render_template("unauthorized.html")
     #check if task is not completed
+    t = UserTask.query.get(tId)
     if t.completed:
         return render_template("oldTask.html")
     task = TaskTemplate.query.get(t.taskId)
     active, passive = model.getCurrentTasks(session['userId'])
-    return render_template("taskDetails.html", task=task, active=active, passive=passive)
+    user = User.query.get(session['userId'])
+    return render_template(task.htmlFile, tId=tId, task=task, active=active, passive=passive, user=user)
+
+###UNIQUE TASK HANDLERS###
+
+@app.route("/task/<tId>/a/<something>")
+def testing(tId, something):
+    return redirect(url_for("index"))
 
 ######################## CRUD HANDLERS ########################
 
@@ -192,6 +199,8 @@ def completedTask(tId):
 #!!!!Make this AJAX!!!!
 @app.route("/task/makepassive/<tId>")
 def makePassive(tId):
+    if not authorized(tId):
+        return redirect(url_for("unauthorized"))
     task = UserTask.query.get(tId)
     task.passive = True
     model.session.commit()
@@ -206,6 +215,20 @@ def createBadge():
     model.session.add()
     model.session.commit()
     return redirect(url_for("index"))
+
+### HELPER FUNCTION ###
+
+@app.route("/unauthorized")
+def unauthorized():
+    #flash warning for why
+    return render_template("unauthorized.html")
+
+#checks if task exists in db and user is authorized to access it
+def authorized(tId):
+    if not UserTask.query.get(tId):
+        return False
+    t = UserTask.query.get(tId)
+    return t.userId == session['userId']
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

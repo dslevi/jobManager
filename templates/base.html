@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
     <head>
         <title>Job Manager</title>
@@ -13,7 +14,6 @@
                     {% for id, task in active %}
                         <div class="task_active" id="at{{task.id}}"><a href="/task/{{task.id}}">{{id}} {{task.title}}</div>
                     {% endfor %}
-
                     </p>
                 </div>
                 <div id="passive_tasks">
@@ -30,11 +30,14 @@
                     <a href="/schedule" class="nav_link">Schedule</a>
                     <a href="/help" class="nav_link">Help</a>
                     <a href="/signout" class="nav_link">Sign out</a>
+                    <span id="points">
+                        Points: {{user.points}}
+                    </span>
                 </div>
                 <div class="window_content">
-                    {% block body %}
+                    {% block content %}
                     {% endblock %}
-                <div>
+                </div>
             </div>
         </div>
     </body>

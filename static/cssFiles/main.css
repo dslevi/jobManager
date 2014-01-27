@@ -36,6 +36,7 @@ body{
     padding: 10px;
 }
 
+<<<<<<< HEAD
 .task_passive{
     padding: 10px;
 }
@@ -45,3 +46,8 @@ body{
     font-size: 20;
 }
 
+=======
+#points{
+    float:right;
+    color:white;
+}
