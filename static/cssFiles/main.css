@@ -102,7 +102,7 @@ a{
 }
 
 .nav_link{
-    padding: 10px 30px;
+    padding: 10px 25px;
 }
 
 .nav_link:hover{
@@ -133,13 +133,10 @@ a{
 
 #logo{
     color:white;
-    padding: 10px 20px;
-    font-size: 20px;
+    padding: 10px 31px;
+    font-size: 22px;
     letter-spacing: 3px;
     background-color: rgb(57, 57, 57);
-    margin: 0px 20px;
-    float:right;
-    box-shadow: 5px 5px 10px lightgray;
 }
 
 .secondary{
