@@ -51,23 +51,20 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="windows">
-                <div class="navbar">
+            <div id="content">
+                <div id="navbar">
                     <div id="links">
-                        <div id="top_links">
-                            <div class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/">HOME</a></div>
-                            <div class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/companies">COMPANIES</a></div>
-                            <div class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/schedule">SCHEDULE</a></div>
-                        </div>
-                        <div id="bottom_links">
-                            <span class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/about" class="right_link">ABOUT</a></span>
-                            <span class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/contact" class="right_link">CONTACT</a></span>
-                            <span class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/help" class="right_link">HELP</a></span>
-                        </div>
+                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/">HOME</a></span>
+                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/companies">COMPANIES</a></span>
+                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/schedule">SCHEDULE</a></span>
+                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/about" class="secondary">ABOUT</a></span>
+                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/contact" class="secondary">CONTACT</a></span>
+                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/help" class="secondary">HELP</a></span>
                     </div>
+                </div>
+                <div id="bottom_nav">
                     <span id="logo">TAS<span class="blue">KY</span></span>
-                    <span id="points">Points: {{user.points}}</span>
-
+                    <span id="points"><span id="points1">Points: {{user.points}}</span><span id="points2"></span></span>
                 </div>
                 <div class="window_content">
                     {% block content %}
