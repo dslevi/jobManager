@@ -54,12 +54,12 @@
             <div id="content">
                 <div id="navbar">
                     <div id="links">
-                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/">HOME</a></span>
-                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/companies">COMPANIES</a></span>
-                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/schedule">SCHEDULE</a></span>
-                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/about" class="secondary">ABOUT</a></span>
-                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/contact" class="secondary">CONTACT</a></span>
-                        <span class="nav_link"><i class="fa-lg fa fa-angle-double-down navicon"></i><a href="/help" class="secondary">HELP</a></span>
+                        <span class="nav_link" data-id="1"><i class="fa-lg fa fa-angle-double-down navicon" id="icon1"></i><a href="/">HOME</a></span>
+                        <span class="nav_link" data-id="2"><i class="fa-lg fa fa-angle-double-down navicon" id="icon2"></i><a href="/companies">COMPANIES</a></span>
+                        <span class="nav_link" data-id="3"><i class="fa-lg fa fa-angle-double-down navicon" id="icon3"></i><a href="/schedule">SCHEDULE</a></span>
+                        <span class="nav_link" data-id="4"><i class="fa-lg fa fa-angle-double-down navicon" id="icon4"></i><a href="/about" class="secondary">ABOUT</a></span>
+                        <span class="nav_link" data-id="5"><i class="fa-lg fa fa-angle-double-down navicon" id="icon5"></i><a href="/contact" class="secondary">CONTACT</a></span>
+                        <span class="nav_link" data-id="6"><i class="fa-lg fa fa-angle-double-down navicon" id="icon6"></i><a href="/help" class="secondary">HELP</a></span>
                     </div>
                 </div>
                 <div id="bottom_nav">
@@ -89,6 +89,16 @@
             $(".task").mouseout(function(){
                 var data = $(this).data('id');
                 $("#ticon" + data).removeClass("white");
+            });
+
+            $(".nav_link").mouseover(function(){
+                var data = $(this).data('id');
+                $("#icon" + data).css("color", "rgb(162, 236, 125)");
+            });
+
+            $(".nav_link").mouseout(function(){
+                var data = $(this).data('id');
+                $("#icon" + data).css("color", "white");
             });
         });
     </script>
