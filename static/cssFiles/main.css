@@ -155,4 +155,19 @@ a{
 
 .passive:hover{
     background-color: whitesmoke;
+    padding: 10px;
+}
+
+.task_passive{
+    padding: 10px;
+}
+
+.nav_link{
+    padding: 20px 20px;
+    font-size: 20;
+}
+
+#points{
+    float:right;
+    color:white;
 }

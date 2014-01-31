@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>???</title>
+        <link rel="stylesheet" href="/static/cssFiles/main.css">
+        <script type="text/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
+    </head>
+    <body>	
+	<div class="container">
+            <div class="windows">
+                <div class="navbar">
+                    <a href="/" class="nav_link">Home</a>
+                    <a href="/companies" class="nav_link">Companies</a>
+                    <a href="/schedule" class="nav_link">Schedule</a>
+                    <a href="/help" class="nav_link">Help</a>
+                    <a href="/signout" class="nav_link">Sign out</a>
+                </div>
+
+                    
+    <div class="window_content">
+    	{% block body %}
+    	{% endblock %}
+   	</div>
+
+    </body>
+</html>
