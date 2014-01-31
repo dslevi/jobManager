@@ -1,19 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="content">
-        <div class="task_content">
-            <p class="header title">{{task.title}}</p>
-            <p class="points_details right">+ {{task.points}} points</p>
-            <p>{{task.description}}</p>
+    <div class="display_task">
+        <div class="task_content"><br>
+            <div id="task_content_header">
+                <span class="header">{{task.title}}</span>
+                <span id="content_points_details">+ {{task.points}} points</span>
+            </div>
+            <div id="details">
+                <div class="d" id="left_details">
+                    <p>DESCRIPTION</p>
+                    <p>{{task.description}}</p>
 
-            {% if task.htmlFile %}
-                <div id="customized_input">
-                    {% block input %}
-                    {% endblock %}
-                </div><br>
-            {% else %}
-                <p><a href="/task/{{tId}}/a/{{task.url}}">COMPLETED!</a></p>
-            {% endif %}
+                    {% if task.htmlFile %}
+                        <div id="customized_input">
+                            {% block input %}
+                            {% endblock %}
+                        </div><br>
+                    {% else %}
+                        <p><a href="/task/{{tId}}/a/{{task.url}}">COMPLETED!</a></p>
+                    {% endif %}
+                </div>
+                <div class="d" id="right_details">
+                    <p>RESOURCES</p>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

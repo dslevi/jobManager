@@ -1,3 +1,5 @@
+/* GENERAL TAGS */
+
 body{
     font-family: "brandon-grotesque",sans-serif;
     width:100%;
@@ -11,75 +13,15 @@ a{
     color: black;
 }
 
-.blue{
-    color:rgb(86, 206, 244);
-}
-
-.task_icon{
-    color:rgb(87, 214, 255);
-    padding-right: 15px;
-}
-
-.white{
-    color:white;
-}
-
-#topbar{
-    width:100%;
-    height:40px;
-    background-color:rgb(46, 80, 43);
-    border-bottom: 1px solid lightgray;
-}
-
-.header{
-    font-size: 30px;
-    letter-spacing: 3px;
-    color:rgb(0, 0, 93);
-}
-
-.title{
-    font-size: 20px;
-}
-
-.right{
-    float:right;
-}
+/* TASK BAR */
 
 .taskbar{
     width: 20%;
-    height: 640px;
+    height: 700px;
     float:left;
     background-color: rgb(57, 57, 57);
     margin:-8px;
     border:2px solid white;
-}
-
-.windows{
-    float:left;
-    padding: 10px;
-    width:72%;
-    height:562px;
-    margin-top: -16px;
-    border-left: 1px solid rgba(87, 214, 255, 0.1);
-}
-
-.navbar{
-    width:100%;
-    background-color: whitesmoke;
-    font-size: 15px;
-    border-bottom: 1px solid lightgray;
-    padding: 20px 15px;
-}
-
-#links{
-    padding-left:20px;
-}
-
-.window_content{
-    background-color: rgb(86, 206, 244);
-    width:100%;
-    height:100%;
-    padding: 10px 10px 10px 20px;
 }
 
 .task{
@@ -93,11 +35,9 @@ a{
     background-color: rgb(87, 214, 255);
 }
 
-.task_details{
-    padding: 10px 15px;
-    border-left: 1px solid rgb(87, 214, 255);
-    border-top: 1px solid lightgray;
-    background-color: white;
+.task_icon{
+    color:rgb(87, 214, 255);
+    padding-right: 15px;
 }
 
 .task_header{
@@ -111,42 +51,25 @@ a{
     box-shadow: 10px 5px 6px lightgray;
 }
 
-.task_content{
-    padding: 10px;
-}
-
 .points_details{
     color: darkgray;
+    font-style: italic;
 }
 
-.subtext{
-    font-size: 12px;
-}
-
-.nav_link{
-    padding: 15px;
-    color: black;
-}
-
-.nav_link:hover{
-    border-bottom: 2px solid orange;
-}
-
-#points{
-    float:right;
-    padding-right: 15px;
+.task_details{
+    padding: 10px 15px;
+    border-left: 1px solid rgb(87, 214, 255);
+    border-top: 1px solid lightgray;
+    background-color: white;
 }
 
 .task_btn{
     background-color: rgb(86, 206, 244);
+    background-color: yellow;
     text-align: center;
     padding: 2px;
     border-radius: 2px;
     cursor: pointer;
-}
-
-.hidden{
-    display:none;
 }
 
 .passive{
@@ -158,16 +81,163 @@ a{
     padding: 10px;
 }
 
-.task_passive{
-    padding: 10px;
+.blue{
+    color:rgb(86, 206, 244);
+}
+
+.white{
+    color:white;
+}
+
+/* NAVBAR */
+
+#links{
+    width:100%;
+    font-size: 15px;
+    background-color: rgb(86, 206, 244);
+    padding: 10px 10px;
+    border-bottom: 2px solid rgb(183, 183, 183);
+    border-top: 1px solid lightgray;
+    text-align: center;
+    box-shadow: 10px 10px 10px lightgray;
 }
 
 .nav_link{
-    padding: 20px 20px;
-    font-size: 20;
+    padding: 10px 30px;
+}
+
+.nav_link:hover{
+    background-color: white;
+}
+
+.navicon{
+    color:white;
+    padding-right:10px;
 }
 
 #points{
     float:right;
-    color:white;
+    color:black;
+    margin-top: 6px;
+    box-shadow: 5px 5px 10px lightgray;
 }
+
+#points1{
+    padding: 5px 100px 5px 10px;
+    background-color: yellow;
+}
+
+#points2{
+    padding: 5px 40px;
+    background-color:white;
+}
+
+#logo{
+    color:white;
+    padding: 10px 20px;
+    font-size: 20px;
+    letter-spacing: 3px;
+    background-color: rgb(57, 57, 57);
+    margin: 0px 20px;
+    float:right;
+    box-shadow: 5px 5px 10px lightgray;
+}
+
+.secondary{
+    color:rgb(54, 54, 54);
+}
+
+/* STYLERS */
+
+.subtext{
+    font-size: 12px;
+}
+
+.hidden{
+    display:none;
+}
+
+.header{
+    font-size: 25px;
+    background-color: lightblue;
+    padding: 10px 40px 10px 20px;
+    box-shadow: 5px 5px 5px lightgray;
+}
+/* WINDOW CONTENT */
+
+#content{
+    float:left;
+    padding: 10px;
+    width:78%;
+    height:562px;
+    margin-top: -16px;
+    border-left: 1px solid rgba(87, 214, 255, 0.1);
+}
+
+.window_content{
+    border-top: 4px solid lightgray;
+    background-color: whitesmoke;
+    width:100%;
+    height:100%;
+    padding: 10px 10px 10px 20px;
+    border-left: 1px solid lightgray;
+}
+
+/* DISPLAY TASK */
+
+.display_task{
+    padding: 10px 30px;
+}
+
+#details{
+    background-color: whitesmoke;
+    padding: 10px;
+    width: 100%;
+    height: 500px;
+    margin-top: 15px;
+}
+
+#content_points_details{
+    color: darkgray;
+    font-size: 14px;
+    padding-left: 10px;
+    font-style: italic;
+}
+
+#customized_input{
+    background-color: white;
+    padding: 20px;
+    width:80%;
+}
+
+#left_details{
+    width:60%;
+    margin-right: 20px;
+    height:400px;
+}
+
+#right_details{
+    width:30%;
+    height:400px;
+}
+
+.d{
+    float:left;
+    background-color: white;
+    padding:10px;
+    color:black;
+    margin:10px;
+    border-top: 60px solid rgb(57, 57, 57);
+    border-bottom: 20px solid rgb(57, 57, 57);
+    border-right: none;
+    border-left: none;
+    box-shadow: 10px 10px 10px gray;
+    text-align: center;
+}
+
+
+
+
+
+
+
