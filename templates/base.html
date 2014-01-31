@@ -9,7 +9,6 @@
     <body>
         <div class="container">
             <div class="taskbar">
-             
                 <div id="active_tasks">
                     <div id="active_box"><p class="task_header">ACTIVE <span class="blue">TASKS</span></p>
                     {% for id, task in active %}
@@ -47,21 +46,28 @@
                         <div class="task_details hidden subtext" id="td{{task.id}}">
                             <p>{{task.description}}</p>
                             <p class="points_details">+ {{task.points}} points</p>
-                            <div class="task_btn"><a href="/task/{{id}}">START!</a></div>
+                            <a href="/task/{{id}}"><div class="task_btn">START!</div></a>
                         </div>
                     {% endfor %}
                 </div>
             </div>
             <div class="windows">
                 <div class="navbar">
-                    <span id="links">
-                        <i class="fa-lg fa fa-angle-double-down icon"></i><a href="/" class="nav_link">HOME</a>
-                        <a href="/companies" class="nav_link">COMPANIES</a>
-                        <a href="/schedule" class="nav_link">SCHEDULE</a>
-                    </span>
-                    <span id="points">
-                        Points: {{user.points}}
-                    </span>
+                    <div id="links">
+                        <div id="top_links">
+                            <div class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/">HOME</a></div>
+                            <div class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/companies">COMPANIES</a></div>
+                            <div class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/schedule">SCHEDULE</a></div>
+                        </div>
+                        <div id="bottom_links">
+                            <span class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/about" class="right_link">ABOUT</a></span>
+                            <span class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/contact" class="right_link">CONTACT</a></span>
+                            <span class="nav_link"><i class="fa-lg fa fa-angle-double-down icon"></i><a href="/help" class="right_link">HELP</a></span>
+                        </div>
+                    </div>
+                    <span id="logo">TAS<span class="blue">KY</span></span>
+                    <span id="points">Points: {{user.points}}</span>
+
                 </div>
                 <div class="window_content">
                     {% block content %}
