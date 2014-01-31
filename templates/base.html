@@ -1,33 +1,63 @@
 <!doctype html>
 <html>
     <head>
-        <title>???</title>
+        <title>Tasky</title>
         <link rel="stylesheet" href="/static/cssFiles/main.css">
         <script type="text/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     </head>
     <body>
         <div class="container">
             <div class="taskbar">
                 <div id="active_tasks">
-                    <p class="header">Active Tasks</p>
+                    <div id="active_box"><p class="task_header">ACTIVE <span class="blue">TASKS</span></p>
                     {% for id, task in active %}
-                        <div class="task active" id="at{{task.id}}">{{id}} {{task.title}}</div>
+                        <div class="task active" data-id="{{task.id}}" id="at{{task.id}}">
+                            {% if task.difficulty== 0%}
+                                <i id="ticon{{task.id}}" class="fa fa-lg fa-sun-o task_icon"></i>
+                            {% elif task.difficulty==1 %}
+                                <i id="ticon{{task.id}}" class="fa fa-lg fa-cloud task_icon"></i>
+                            {% else %}
+                                <i id="ticon{{task.id}}" class="fa fa-lg fa-umbrella task_icon"></i>
+                            {% endif %}
+                            {{task.title}}
+                        </div>
+                        <div class="task_details hidden subtext" id="td{{task.id}}">
+                            <p>{{task.description}}</p>
+                            <p class="points_details">+ {{task.points}} points</p>
+                            <div class="task_btn"><a href="/task/{{id}}">START!</a></div>
+                        </div>
                     {% endfor %}
+                    </div>
                 </div>
                 <div id="passive_tasks">
-                    <p class="header">Passive Tasks</p>
+                    <p class="task_header">PASSIVE <span class="blue">TASKS</span></p>
                     {% for id, task in passive %}
-                        <div class="task passive" id="pt{{task.id}}">{{id}} {{task.title}}</div>
+                        <div class="task passive" data-id="{{task.id}}" id="pt{{task.id}}">
+                            {% if task.difficulty== 0%}
+                                <i class="fa fa-lg fa-sun-o task_icon white"></i>
+                            {% elif task.difficulty==1 %}
+                                <i class="fa fa-lg fa-cloud task_icon white"></i>
+                            {% else %}
+                                <i class="fa fa-lg fa-umbrella task_icon white"></i>
+                            {% endif %}
+                            {{task.title}}
+                        </div>
+                        <div class="task_details hidden subtext" id="td{{task.id}}">
+                            <p>{{task.description}}</p>
+                            <p class="points_details">+ {{task.points}} points</p>
+                            <div class="task_btn"><a href="/task/{{id}}">START!</a></div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
             <div class="windows">
                 <div class="navbar">
-                    <a href="/" class="nav_link">Home</a>
-                    <a href="/companies" class="nav_link">Companies</a>
-                    <a href="/schedule" class="nav_link">Schedule</a>
-                    <a href="/help" class="nav_link">Help</a>
-                    <a href="/signout" class="nav_link">Sign out</a>
+                    <span id="links">
+                        <i class="fa-lg fa fa-angle-double-down icon"></i><a href="/" class="nav_link">HOME</a>
+                        <a href="/companies" class="nav_link">COMPANIES</a>
+                        <a href="/schedule" class="nav_link">SCHEDULE</a>
+                    </span>
                     <span id="points">
                         Points: {{user.points}}
                     </span>
@@ -39,4 +69,23 @@
             </div>
         </div>
     </body>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".task").click( function(){
+                $(".task_details").addClass("hidden");
+                var data = $(this).data('id');
+                $("#td" + data).toggle(".hidden");
+            });
+
+            $(".task").mouseover(function(){
+                var data = $(this).data('id');
+                $("#ticon" + data).addClass("white");
+            });
+
+            $(".task").mouseout(function(){
+                var data = $(this).data('id');
+                $("#ticon" + data).removeClass("white");
+            });
+        });
+    </script>
 </html>

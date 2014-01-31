@@ -1,42 +1,158 @@
 body{
-    font-family: futura;
+    font-family: "brandon-grotesque",sans-serif;
     width:100%;
     height:100%;
+    background-color: whitesmoke;
+    font-size: 15px;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.blue{
+    color:rgb(86, 206, 244);
+}
+
+.task_icon{
+    color:rgb(87, 214, 255);
+    padding-right: 15px;
+}
+
+.white{
+    color:white;
+}
+
+#topbar{
+    width:100%;
+    height:40px;
+    background-color:rgb(46, 80, 43);
+    border-bottom: 1px solid lightgray;
+}
+
+.header{
+    font-size: 30px;
+    letter-spacing: 3px;
+    color:rgb(0, 0, 93);
+}
+
+.title{
+    font-size: 20px;
+}
+
+.right{
+    float:right;
 }
 
 .taskbar{
-    width: 25%;
-    height: 100%;
+    width: 20%;
+    height: 640px;
     float:left;
-    background-color: whitesmoke;
-    padding: 10px;
+    background-color: rgb(57, 57, 57);
+    margin:-8px;
+    border:2px solid white;
 }
 
 .windows{
     float:left;
     padding: 10px;
-    width:70%;
-    height:100%;
-    margin-top: -10px;
+    width:72%;
+    height:562px;
+    margin-top: -16px;
+    border-left: 1px solid rgba(87, 214, 255, 0.1);
 }
 
 .navbar{
     width:100%;
-    padding: 30px 10px;
-    background-color: gray;
+    background-color: whitesmoke;
+    font-size: 15px;
+    border-bottom: 1px solid lightgray;
+    padding: 20px 15px;
 }
+
+#links{
+    padding-left:20px;
+}
+
 .window_content{
-    background-color: lightblue;
+    background-color: rgb(86, 206, 244);
     width:100%;
     height:100%;
-    padding: 10px;
+    padding: 10px 10px 10px 20px;
 }
 
 .task{
+    padding: 10px 15px;
+    border-bottom: 1px solid white;
+    background-color: whitesmoke;
+}
+
+.task:hover{
+    cursor: pointer;
+    background-color: rgb(87, 214, 255);
+}
+
+.task_details{
+    padding: 10px 15px;
+    border-left: 1px solid rgb(87, 214, 255);
+    border-top: 1px solid lightgray;
+    background-color: white;
+}
+
+.task_header{
+    background-color: rgb(57, 57, 57);;
+    color:whitesmoke;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding: 0px 0px 13px 20px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid gray;
+    box-shadow: 10px 5px 6px lightgray;
+}
+
+.task_content{
     padding: 10px;
+}
+
+.points_details{
+    color: darkgray;
+}
+
+.subtext{
+    font-size: 12px;
+}
+
+.nav_link{
+    padding: 15px;
+    color: black;
+}
+
+.nav_link:hover{
+    border-bottom: 2px solid orange;
 }
 
 #points{
     float:right;
-    color:white;
+    padding-right: 15px;
+}
+
+.task_btn{
+    background-color: rgb(86, 206, 244);
+    text-align: center;
+    padding: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.hidden{
+    display:none;
+}
+
+.passive{
+    background-color: rgb(86, 206, 244);
+}
+
+.passive:hover{
+    background-color: whitesmoke;
 }

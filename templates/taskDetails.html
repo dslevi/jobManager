@@ -2,18 +2,18 @@
 {% block content %}
     <div class="content">
         <div class="task_content">
-            {{task.title}}<br>
-            {{task.description}}<br>
-            {{task.points}}<br>
+            <p class="header title">{{task.title}}</p>
+            <p class="points_details right">+ {{task.points}} points</p>
+            <p>{{task.description}}</p>
 
             {% if task.htmlFile %}
                 <div id="customized_input">
                     {% block input %}
                     {% endblock %}
-                </div>
+                </div><br>
+            {% else %}
+                <p><a href="/task/{{tId}}/a/{{task.url}}">COMPLETED!</a></p>
             {% endif %}
-
-            <a href="/task/{{tId}}/a/{{task.url}}">COMPLETED!</a>
         </div>
     </div>
 {% endblock %}

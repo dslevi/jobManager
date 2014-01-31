@@ -112,10 +112,10 @@ class Contact(Base):
 class Interview(Base):
     __tablename__ = "interviews"
     id = Column(Integer, primary_key=True)
-    deadline = Column(DateTime, default=datetime.now)
     notes = Column(Text, nullable=True)
     completed = Column(Boolean, default=False)
 
+    date = relationship("Date", uselist=False)
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
 
@@ -127,6 +127,19 @@ class Note(Base):
 
     companyId = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company")
+
+class Date(Base):
+    __tablename__ = "dates"
+    id = Column(Integer, primary_key=True)
+    deadline = Column(DateTime, default=datetime.now)
+    #0:Company, 1:Event, 2:Misc
+    category = Column(Integer, default=0)
+
+    interviewId = Column(Integer, ForeignKey("interviews.id"))
+    interview = relationship("Interview")
+    #EVENT
+    #COMPANY DEADLINES ....?
+
 
 #MANY TO MANY
 
@@ -259,7 +272,6 @@ def create_badgeTemplates():
     line = f.readline()
     while line != "":
         tokens = line.split(",")
-        print tokens
         b = BadgeTemplate(name=tokens[1], description=tokens[2], imgPath=tokens[3])
         session.add(b)
         session.commit()
